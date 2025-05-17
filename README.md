@@ -4,7 +4,7 @@
 [![Windows CI](https://github.com/jkammerland/backport/actions/workflows/windows_ci.yml/badge.svg?branch=master)](https://github.com/jkammerland/backport/actions/workflows/windows_ci.yml)
 [![macOS CI](https://github.com/jkammerland/backport/actions/workflows/macos_ci.yml/badge.svg?branch=master)](https://github.com/jkammerland/backport/actions/workflows/macos_ci.yml)
 
-This project aims to backport c++23/26 constructs that can be implemented in earlier versions of C++. The goal is that 
+This project aims to backport C++23/26 constructs that can be implemented in earlier versions of the standard. The goal is that 
 when the real implementation is available, the library defaults to the real one, providing a seamless drop-in replacement.
 
 Take expected as an example. This library use "tl::expected" when the c++ one is not available. Under the hood it works something like this:
