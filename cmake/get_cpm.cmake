@@ -13,4 +13,7 @@ if(NOT DEFINED CPM_PATH)
 endif()
 
 # Include CPM
+if(NOT DEFINED CPM_SOURCE_CACHE)
+  set(CPM_SOURCE_CACHE ${CMAKE_BINARY_DIR}/cpm_cache)
+endif()
 include(${CPM_PATH})

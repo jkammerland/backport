@@ -12,7 +12,6 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(target_install_package)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/get_cpm.cmake)
-set(CPM_SOURCE_CACHE ${CMAKE_BINARY_DIR}/cpm_cache)
 
 option(backport_USE_SYSTEM_EXPECTED "Use system expected" OFF)
 if(NOT backport_USE_SYSTEM_EXPECTED)
