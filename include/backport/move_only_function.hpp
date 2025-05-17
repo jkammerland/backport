@@ -41,7 +41,6 @@ template <typename R, typename... Args> class move_only_function<R(Args...)> {
         virtual ~callable_base()  = default;
     };
 
-    // Concrete implementation for specific callable types
     template <typename Callable> struct callable_impl : callable_base {
         Callable func;
 
@@ -54,19 +53,14 @@ template <typename R, typename... Args> class move_only_function<R(Args...)> {
     std::unique_ptr<callable_base> callable;
 
   public:
-    // Default constructor (empty function)
     move_only_function() noexcept = default;
 
-    // Nullptr constructor (empty function)
     move_only_function(std::nullptr_t) noexcept : move_only_function() {}
 
-    // Move constructor
     move_only_function(move_only_function &&other) noexcept = default;
 
-    // Copy constructor deleted (move-only semantics)
     move_only_function(const move_only_function &) = delete;
 
-    // Constructor from callable
     template <typename F>
     move_only_function(F &&f)
         requires(!std::is_same_v<std::decay_t<F>, move_only_function> && std::is_invocable_r_v<R, F, Args...>)
@@ -74,10 +68,8 @@ template <typename R, typename... Args> class move_only_function<R(Args...)> {
         callable = std::make_unique<callable_impl<std::decay_t<F>>>(std::forward<F>(f));
     }
 
-    // Move assignment
     move_only_function &operator=(move_only_function &&other) noexcept = default;
 
-    // Copy assignment deleted (move-only semantics)
     move_only_function &operator=(const move_only_function &) = delete;
 
     // Assignment from nullptr
@@ -86,7 +78,6 @@ template <typename R, typename... Args> class move_only_function<R(Args...)> {
         return *this;
     }
 
-    // Assignment from callable
     template <typename F>
     move_only_function &operator=(F &&f)
         requires(!std::is_same_v<std::decay_t<F>, move_only_function> && std::is_invocable_r_v<R, F, Args...>)
@@ -96,16 +87,14 @@ template <typename R, typename... Args> class move_only_function<R(Args...)> {
         return *this;
     }
 
-    // Function call operator
     R operator()(Args... args) const {
         assert(callable && "callbable is nullptr");
         return callable->invoke(std::forward<Args>(args)...);
     }
 
-    // Boolean conversion operator
     explicit operator bool() const noexcept { return callable != nullptr; }
 
-    // Swap function
+    // Member swap
     void swap(move_only_function &other) noexcept { callable.swap(other.callable); }
 };
 
