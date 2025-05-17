@@ -14,7 +14,6 @@ namespace backport {
 #if defined(__cpp_lib_move_only_function) && __cpp_lib_move_only_function >= 202110L && !defined(MOVE_ONLY_FUNCTION_CUSTOM_IMPL)
 
 // Use std::move_only_function if available
-#include <functional>
 template <typename Signature> using move_only_function = std::move_only_function<Signature>;
 
 #else

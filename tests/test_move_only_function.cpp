@@ -1,8 +1,8 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include <backport/move_only_function.hpp>
 #include <doctest/doctest.h>
 #include <functional>
 #include <memory>
-#include <backport/move_only_function.h>
 #include <string>
 #include <utility>
 
