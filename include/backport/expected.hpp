@@ -29,8 +29,15 @@ template <typename E> using unexpected           = tl::unexpected<E>;
 
 template <typename E> using bad_expected_access = tl::bad_expected_access<E>;
 
+#if __cplusplus >= 201703L
+// C++17 and later: use inline explicitly
 inline constexpr tl::unexpect_t unexpect{};
 inline constexpr tl::in_place_t in_place{};
+#else
+// C++11 and C++14: rely on constexpr implicitly having external linkage
+constexpr tl::unexpect_t unexpect{};
+constexpr tl::in_place_t in_place{};
+#endif
 
 // using namespace tl;
 
