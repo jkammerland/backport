@@ -14,7 +14,7 @@ include(FetchContent)
 FetchContent_Declare(
     backport
     https://github.com/jkammerland/backport.git
-    GIT_TAG v1.0.2 # or branch/commit
+    GIT_TAG v1.0.4 # or branch/commit
 )
 FetchContent_MakeAvailable(backport)
 

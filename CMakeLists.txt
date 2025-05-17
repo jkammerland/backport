@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 3.25)
 project(
   backport
-  VERSION 1.0.2
+  VERSION 1.0.4
   LANGUAGES CXX)
 
 include(FetchContent)
 FetchContent_Declare(
   target_install_package
   GIT_REPOSITORY https://github.com/jkammerland/target_install_package.cmake.git
-  GIT_TAG master)
+  GIT_TAG v1.0.6)
 FetchContent_MakeAvailable(target_install_package)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/get_cpm.cmake)
@@ -43,8 +43,8 @@ target_sources(
             BASE_DIRS
             "${CMAKE_CURRENT_SOURCE_DIR}/include"
             FILES
-            "include/backport/expected.h"
-            "include/backport/move_only_function.h")
+            "include/backport/expected.hpp"
+            "include/backport/move_only_function.hpp")
 
 target_link_libraries(${PROJECT_NAME} INTERFACE tl::expected)
 
@@ -53,9 +53,9 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_LIST_DIR} OR backport_INSTALL)
   target_install_package(${PROJECT_NAME})
 endif()
 
-option(BACKPORT_BUILD_TESTS "Build tests (default)" OFF)
+option(backport_BUILD_TESTS "Build tests (default)" OFF)
 option(BACKPORT_FORCE_DISABLE_BUILD_TESTS "Absolutely disable building tests" OFF)
-if(NOT BACKPORT_FORCE_DISABLE_BUILD_TESTS AND BACKPORT_BUILD_TESTS)
+if(NOT BACKPORT_FORCE_DISABLE_BUILD_TESTS AND backport_BUILD_TESTS)
   include(CTest)
   enable_testing()
 
