@@ -4,11 +4,9 @@
 // feature in the standard library, which was introduced in C++23. The value 202202L represents the date when the
 // feature was added to the standard (February 2022).
 #if defined(__cpp_lib_expected) && __cpp_lib_expected >= 202202L && !defined(EXPECTED_CUSTOM_IMPL)
-// Use std::expected if available
-#include <expected> // Moved to global scope
+#include <expected>
 #else
-// Fall back to tl::expected
-#include <tl/expected.hpp> // Moved to global scope
+#include <tl/expected.hpp>
 #endif
 
 namespace backport {
@@ -38,8 +36,6 @@ inline constexpr tl::in_place_t in_place{};
 constexpr tl::unexpect_t unexpect{};
 constexpr tl::in_place_t in_place{};
 #endif
-
-// using namespace tl;
 
 #endif
 } // namespace backport

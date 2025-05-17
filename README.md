@@ -7,6 +7,48 @@
 This project aims to backport C++23/26 constructs that can be implemented in earlier versions of the standard. The goal is that 
 when the real implementation is available, the library defaults to the real one, providing a seamless drop-in replacement.
 
+## How to install
+
+```cmake
+include(FetchContent)
+FetchContent_Declare(
+    backport
+    https://github.com/jkammerland/backport.git
+    GIT_TAG v1.0.2 # or branch/commit
+)
+FetchContent_MakeAvailable(backport)
+
+# ...
+target_link_libraries(my_target PRIVATE backport::backport)
+target_compile_features(my_target PRIVATE cxx_std_20) # or any other version you need...
+
+# Other options to force compiler warnings or errors when using higher than expected standard version
+# set_property(TARGET my_target PROPERTY CXX_STANDARD 11)
+# set_property(TARGET my_target PROPERTY CXX_STANDARD_REQUIRED ON)
+# set_property(TARGET my_target PROPERTY CXX_EXTENSIONS OFF)
+```
+
+## How to Use
+
+Using Backport C++ is straightforward - simply include the header for the feature you need and use it from the `backport` namespace:
+
+```cpp
+#include <backport/expected.hpp>
+#include <backport/move_only_function.hpp>
+
+backport::expected<int, std::string> compute(bool succeed) {
+    if (succeed)
+        return 42;
+    return backport::unexpected("failed");
+}
+
+void use_callback(backport::move_only_function<int(int, int)> callback) {
+    int result = callback(2, 3);
+    // ...
+}
+```
+
+## How it works
 Take expected as an example. This library use "tl::expected" when the c++ one is not available. Under the hood it works something like this:
 
 ```cpp
@@ -24,47 +66,11 @@ namespace backport
 }
 ```
 
-Currently, these are the backported constructs:
+> [!NOTE]  
+> Currently, these are the backported constructs:
 
 - [x] `std::move_only_function` (c++23 -> c++20)
 - [x] `std::expected` (c++23 -> c++11)
-
-## How to install
-
-```cmake
-include(FetchContent)
-FetchContent_Declare(
-    backport
-    https://github.com/jkammerland/backport.git
-    GIT_TAG v1.0.2 # or branch/commit
-)
-FetchContent_MakeAvailable(backport)
-
-# ...
-target_link_libraries(my_target PRIVATE backport::backport)
-```
-
-## How to Use
-
-Using Backport C++ is straightforward - simply include the header for the feature you need and use it from the `backport` namespace:
-
-```cpp
-#include <backport/expected.hpp>
-#include <backport/move_only_function.hpp>
-
-// Use backport::expected
-backport::expected<int, std::string> compute(bool succeed) {
-    if (succeed)
-        return 42;
-    return backport::unexpected("failed");
-}
-
-// Use backport::move_only_function
-void use_callback(backport::move_only_function<int(int, int)> callback) {
-    int result = callback(2, 3);
-    // ...
-}
-```
 
 ### What to Expect with Different Compiler Versions
 
@@ -89,7 +95,7 @@ When using a compiler with native support for C++23 features:
 If you need to use the backported implementations even when standard ones are available (for testing purposes or to ensure consistent behavior):
 
 ```cpp
-// Define before including headers:
+// NOTE: Prefer setting this in your build system instead of like this
 #define EXPECTED_CUSTOM_IMPL
 #define MOVE_ONLY_FUNCTION_CUSTOM_IMPL
 
