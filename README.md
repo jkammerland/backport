@@ -1,6 +1,10 @@
 # Backport c++
 
-This project aims to backport c++23/c++26 constructs that can be implemented in early versions of C++. The goal is that 
+[![Linux CI](https://github.com/jkammerland/backport/actions/workflows/ubuntu_ci.yml/badge.svg?branch=master)](https://github.com/jkammerland/backport/actions/workflows/ubuntu_ci.yml)
+[![Windows CI](https://github.com/jkammerland/backport/actions/workflows/windows_ci.yml/badge.svg?branch=master)](https://github.com/jkammerland/backport/actions/workflows/windows_ci.yml)
+[![macOS CI](https://github.com/jkammerland/backport/actions/workflows/macos_ci.yml/badge.svg?branch=master)](https://github.com/jkammerland/backport/actions/workflows/macos_ci.yml)
+
+This project aims to backport c++23/26 constructs that can be implemented in earlier versions of C++. The goal is that 
 when the real implementation is available, the library defaults to the real one, providing a seamless drop-in replacement.
 
 Take expected as an example. This library use "tl::expected" when the c++ one is not available. Under the hood it works something like this:
@@ -20,9 +24,9 @@ namespace backport
 }
 ```
 
-Currently these are the backported features:
+Currently, these are the backported constructs:
 
-- [x] std::move_only_function (c++23 -> c++20)
+- [x] `std::move_only_function` (c++23 -> c++20)
 - [x] `std::expected` (c++23 -> c++11)
 
 ## How to install

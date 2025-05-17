@@ -4,9 +4,6 @@ project(tests VERSION 1.0.0)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-include(CTest)
-enable_testing()
-
 include(${CMAKE_CURRENT_SOURCE_DIR}/get_cpm.cmake)
 set(CPM_SOURCE_CACHE ${CMAKE_BINARY_DIR}/cpm_cache)
 
