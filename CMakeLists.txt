@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.25)
 project(
   backport
-  VERSION 1.0.1
+  VERSION 1.0.2
   LANGUAGES CXX)
 
 include(FetchContent)
@@ -54,9 +54,9 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_LIST_DIR} OR backport_INSTALL)
   target_install_package(${PROJECT_NAME})
 endif()
 
-option(BACKPORT_FORCE_BUILD_TESTS "Build tests" OFF)
+option(BACKPORT_BUILD_TESTS "Build tests (default)" OFF)
 option(BACKPORT_FORCE_DISABLE_BUILD_TESTS "Absolutely disable building tests" OFF)
-if(NOT BACKPORT_FORCE_DISABLE_BUILD_TESTS AND (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_LIST_DIR} OR BACKPORT_FORCE_BUILD_TESTS))
+if(NOT BACKPORT_FORCE_DISABLE_BUILD_TESTS AND BACKPORT_BUILD_TESTS)
   include(CTest)
   enable_testing()
 
