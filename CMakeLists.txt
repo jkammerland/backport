@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.25)
 project(
   backport
-  VERSION 1.0.5
+  VERSION 1.0.6
   LANGUAGES CXX)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/get_cpm.cmake)

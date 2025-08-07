@@ -7,7 +7,7 @@ vcpkg_from_github(
   REPO
   jkammerland/backport # [github]
   REF
-  "v${VERSION}" # The version tag (e.g., v1.0.5) - ${VERSION} is filled from vcpkg.json
+  "v${VERSION}" # The version tag (e.g., v1.0.6) - ${VERSION} is filled from vcpkg.json
   SHA512
   16c177045a7becf91f648ea2e9afec868ebd1d5b60ce8f5b6a624ae24141c4c6943bb361094beb978f50fc42ab890f0d5272078a3152d9f374423e8dc92b8de0
   HEAD_REF

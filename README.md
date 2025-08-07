@@ -24,7 +24,7 @@ include(FetchContent)
 FetchContent_Declare(
     backport
     GIT_REPOSITORY https://github.com/jkammerland/backport.git
-    GIT_TAG v1.0.5 # or branch/commit
+    GIT_TAG v1.0.6 # or branch/commit
 )
 FetchContent_MakeAvailable(backport)
 
@@ -115,4 +115,3 @@ If you need to use the backported implementations even when standard ones are av
 ```
 
 This will force the use of the custom implementations regardless of compiler support. These are also used for testing parity in the unit tests.
-```

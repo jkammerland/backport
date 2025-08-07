@@ -1,6 +1,6 @@
 {
     "name": "backport",
-    "version-string": "1.0.5",
+    "version-string": "1.0.6",
     "description": "Backports C++23/26 constructs to earlier standards.",
     "homepage": "https://github.com/jkammerland/backport",
     "license": "MIT",

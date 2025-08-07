@@ -9,6 +9,10 @@
 #include <stdexcept>
 #include <array>
 
+#ifdef _MSC_VER
+#include <malloc.h>  // For _aligned_malloc/_aligned_free on MSVC
+#endif
+
 using namespace backport;
 
 // Track allocations
@@ -30,7 +34,14 @@ void* operator new(std::size_t size, std::align_val_t align) {
         allocation_count++;
     }
     size_t alignment = static_cast<size_t>(align);
-    void* ptr = std::aligned_alloc(alignment, size);
+#ifdef _MSC_VER
+    // MSVC doesn't have std::aligned_alloc, use _aligned_malloc instead
+    void* ptr = _aligned_malloc(size, alignment);
+#else
+    // POSIX/C11 aligned_alloc requires size to be multiple of alignment
+    size_t aligned_size = (size + alignment - 1) & ~(alignment - 1);
+    void* ptr = std::aligned_alloc(alignment, aligned_size);
+#endif
     if (!ptr) throw std::bad_alloc{};
     return ptr;
 }
@@ -53,14 +64,24 @@ void operator delete(void* ptr, std::align_val_t) noexcept {
     if (tracking_enabled) {
         deallocation_count++;
     }
+#ifdef _MSC_VER
+    // MSVC requires _aligned_free for memory allocated with _aligned_malloc
+    _aligned_free(ptr);
+#else
     std::free(ptr);
+#endif
 }
 
 void operator delete(void* ptr, std::size_t, std::align_val_t) noexcept {
     if (tracking_enabled) {
         deallocation_count++;
     }
+#ifdef _MSC_VER
+    // MSVC requires _aligned_free for memory allocated with _aligned_malloc
+    _aligned_free(ptr);
+#else
     std::free(ptr);
+#endif
 }
 
 void reset_counters() {
