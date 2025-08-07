@@ -1,0 +1,29 @@
+name: Windows CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+        
+    - name: Configure CMake
+      run: cmake -B ${{gitea.workspace}}/build -DCMAKE_BUILD_TYPE=Release -Dbackport_BUILD_TESTS=ON
+      
+    - name: Build
+      run: cmake --build ${{gitea.workspace}}/build --config Release
+
+    - name: Verify Test Executables
+      run: |
+        dir ${{gitea.workspace}}\build\tests
+      
+    - name: Test
+      working-directory: ${{gitea.workspace}}/build
+      run: |
+        ctest -C Release --output-on-failure -V
