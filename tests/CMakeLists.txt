@@ -38,3 +38,17 @@ set_property(TARGET test_cpp20_compat PROPERTY CXX_STANDARD 20)
 set_property(TARGET test_cpp20_compat PROPERTY CXX_STANDARD_REQUIRED ON)
 set_property(TARGET test_cpp20_compat PROPERTY CXX_EXTENSIONS OFF)
 add_test(NAME test_cpp20_compat COMMAND test_cpp20_compat)
+
+# Test for small object optimization
+add_executable(test_soo test_soo.cpp)
+target_link_libraries(test_soo PRIVATE backport doctest::doctest)
+target_compile_definitions(test_soo PRIVATE MOVE_ONLY_FUNCTION_CUSTOM_IMPL)
+target_compile_features(test_soo PRIVATE cxx_std_20)
+add_test(NAME test_soo COMMAND test_soo)
+
+# Test for edge cases
+add_executable(test_edge_cases test_edge_cases.cpp)
+target_link_libraries(test_edge_cases PRIVATE backport doctest::doctest)
+target_compile_definitions(test_edge_cases PRIVATE MOVE_ONLY_FUNCTION_CUSTOM_IMPL)
+target_compile_features(test_edge_cases PRIVATE cxx_std_20)
+add_test(NAME test_edge_cases COMMAND test_edge_cases)

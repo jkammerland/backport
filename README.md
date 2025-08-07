@@ -1,11 +1,21 @@
-# Backport c++
+# Backport C++
 
 [![Linux CI](https://github.com/jkammerland/backport/actions/workflows/ubuntu_ci.yml/badge.svg?branch=master)](https://github.com/jkammerland/backport/actions/workflows/ubuntu_ci.yml)
 [![Windows CI](https://github.com/jkammerland/backport/actions/workflows/windows_ci.yml/badge.svg?branch=master)](https://github.com/jkammerland/backport/actions/workflows/windows_ci.yml)
 [![macOS CI](https://github.com/jkammerland/backport/actions/workflows/macos_ci.yml/badge.svg?branch=master)](https://github.com/jkammerland/backport/actions/workflows/macos_ci.yml)
 
 This project aims to backport C++23/26 constructs that can be implemented in earlier versions of the standard. The goal is that 
-when the real implementation is available, the library defaults to the real one, providing a seamless drop-in replacement.
+when the real implementation is available, the library defaults to the real one, providing a seamless drop-in replacement. 
+
+> [!WARNING]
+> **ABI Compatibility Warning**: Never expose `backport::` types across shared library boundaries.
+> These types may resolve to different implementations (`std::` vs third-party) depending on
+> compiler version and build flags, causing silent ABI incompatibility. This leads to memory
+> corruption, crashes, or incorrect behavior - NOT compile/link errors. Keep these types internal
+> to your implementation and use standard types at API boundaries.
+
+> [!NOTE]
+> For header-only or static library builds, any implementation mismatch will result in compile/link errors.
 
 ## How to install
 
@@ -13,8 +23,8 @@ when the real implementation is available, the library defaults to the real one,
 include(FetchContent)
 FetchContent_Declare(
     backport
-    https://github.com/jkammerland/backport.git
-    GIT_TAG v1.0.4 # or branch/commit
+    GIT_REPOSITORY https://github.com/jkammerland/backport.git
+    GIT_TAG v1.0.5 # or branch/commit
 )
 FetchContent_MakeAvailable(backport)
 
@@ -49,7 +59,7 @@ void use_callback(backport::move_only_function<int(int, int)> callback) {
 ```
 
 ## How it works
-Take expected as an example. This library use "tl::expected" when the c++ one is not available. Under the hood it works something like this:
+Take expected as an example. This library uses "tl::expected" when the C++ one is not available. Under the hood it works something like this:
 
 ```cpp
 namespace backport
@@ -69,8 +79,8 @@ namespace backport
 > [!NOTE]  
 > Currently, these are the backported constructs:
 
-- [x] `std::move_only_function` (c++23 -> c++20)
-- [x] `std::expected` (c++23 -> c++11)
+- [x] `std::move_only_function` (C++23 → C++20)
+- [x] `std::expected` (C++23 → C++11)
 
 ### What to Expect with Different Compiler Versions
 
@@ -96,6 +106,7 @@ If you need to use the backported implementations even when standard ones are av
 
 ```cpp
 // NOTE: Prefer setting this in your build system instead of like this
+// e.g., target_compile_definitions(your_target PRIVATE EXPECTED_CUSTOM_IMPL MOVE_ONLY_FUNCTION_CUSTOM_IMPL)
 #define EXPECTED_CUSTOM_IMPL
 #define MOVE_ONLY_FUNCTION_CUSTOM_IMPL
 
